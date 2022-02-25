@@ -4,8 +4,14 @@ package com.qiwi.my_spring;
  * @author Evgeny Borisov
  */
 public class CleanerImpl implements Cleaner {
+
+    @InjectRandomInt(min = 3, max = 7)
+    private int repeat;
+
     @Override
     public void clean() {
-        System.out.println("VVVVVVVVVvvvvvvv");
+        for (int i = 0; i < repeat; i++) {
+            System.out.println("VVVVVVVVVvvvvvvv");
+        }
     }
 }
