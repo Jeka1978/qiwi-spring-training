@@ -3,6 +3,8 @@ package com.qiwi.my_spring;
 import lombok.SneakyThrows;
 import org.reflections.Reflections;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,9 +42,20 @@ public class ObjectFactory {
 
         configure(t);
 
+        invokeInit(type, t);
+
         return t;
 
 
+    }
+
+    private <T> void invokeInit(Class<T> type, T t) throws IllegalAccessException, InvocationTargetException {
+        Method[] methods = type.getMethods();
+        for (Method method : methods) {
+            if (method.getName().startsWith("init")) {
+                method.invoke(t);
+            }
+        }
     }
 
     private <T> void configure(T t) {
