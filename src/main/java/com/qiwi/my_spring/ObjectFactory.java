@@ -3,9 +3,7 @@ package com.qiwi.my_spring;
 import lombok.SneakyThrows;
 import org.reflections.Reflections;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
+import java.lang.reflect.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -36,13 +34,28 @@ public class ObjectFactory {
 
 
     @SneakyThrows
-    public <T> T createObject(Class<T> type)  {
+    public <T> T createObject(Class<T> type) {
         type = resolveImple(type);
+
         T t = type.getDeclaredConstructor().newInstance();
 
         configure(t);
 
         invokeInit(type, t);
+
+        if (type.isAnnotationPresent(Loggable.class)) {
+            Object proxy = Proxy.newProxyInstance(type.getClassLoader(), type.getInterfaces(), new InvocationHandler() {
+                @Override
+                public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+                    System.out.println("Logging for method " + method.getName() + " started");
+                    Object retVal = method.invoke(t, args);
+
+                    System.out.println("Logging for method " + method.getName() + " ended");
+                    return retVal;
+                }
+            });
+            return (T) proxy;
+        }
 
         return t;
 
