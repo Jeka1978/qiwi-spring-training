@@ -11,8 +11,10 @@ import org.springframework.stereotype.Component;
  * @author Evgeny Borisov
  */
 
-@Component
+
 @Order(2)
+@Book
+@Film
 public class ShakespearQuoter implements Quoter {
     @Setter
     @Value("${shake}")

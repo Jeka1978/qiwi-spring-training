@@ -2,6 +2,7 @@ package com.qiwi.real_spring;
 
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -13,7 +14,9 @@ import java.util.List;
  */
 @Component("tr")
 public class TalkingRobot {
-    @Autowired
+
+
+    @Film
     private List<Quoter> quoters;
 
     @PostConstruct
