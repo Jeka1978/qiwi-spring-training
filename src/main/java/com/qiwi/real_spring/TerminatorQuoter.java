@@ -1,5 +1,6 @@
 package com.qiwi.real_spring;
 
+import com.qiwi.my_spring.Loggable;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,6 +27,7 @@ public class TerminatorQuoter implements Quoter {
     }
 
     @Override
+    @Loggable
     public void sayQuote() {
         messages.forEach(System.out::println);
     }

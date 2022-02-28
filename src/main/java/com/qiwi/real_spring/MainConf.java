@@ -14,8 +14,6 @@ import org.springframework.stereotype.Service;
 @Configuration
 @ComponentScan
 @PropertySource("classpath:application.properties")
-@EnableAsync
-@EnableScheduling
 //@ImportResource("classpath:context.xml")
 public class MainConf {
 
