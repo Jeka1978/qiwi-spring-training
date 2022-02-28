@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+    <bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>
+
+
+    <bean id="talkingRobot" class="com.qiwi.real_spring.TalkingRobot">
+        <property name="quoters">
+            <list>
+                <ref bean="shakespearQuoter"/>
+                <ref bean="terminatorQuoter"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="shakespearQuoter" class="com.qiwi.real_spring.ShakespearQuoter" lazy-init="true">
+        <property name="message" value="2 B || ! 2 B"/>
+    </bean>
+
+
+    <bean id="terminatorQuoter" class="com.qiwi.real_spring.TerminatorQuoter">
+        <property name="messages">
+            <list>
+                <value>I'll be back</value>
+                <value>Trust me</value>
+            </list>
+        </property>
+    </bean>
+</beans>
+
+
+

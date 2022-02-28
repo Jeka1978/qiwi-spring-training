@@ -17,6 +17,7 @@ public class ObjectFactory {
     private Config config = new JavaConfig();
     private Reflections scanner = new Reflections("com.qiwi");
     private List<ObjectConfigurator> configurators = new ArrayList<>();
+    private List<ProxyConfigurator> proxyConfigurators = new ArrayList<>();
 
     @SneakyThrows
     private ObjectFactory() {
@@ -24,6 +25,12 @@ public class ObjectFactory {
         for (Class<? extends ObjectConfigurator> aClass : classes) {
             if (!Modifier.isAbstract(aClass.getModifiers())) {
                 configurators.add(aClass.getDeclaredConstructor().newInstance());
+            }
+        }
+        Set<Class<? extends ProxyConfigurator>> proxyConfClasses = scanner.getSubTypesOf(ProxyConfigurator.class);
+        for (Class<? extends ProxyConfigurator> aClass : proxyConfClasses) {
+            if (!Modifier.isAbstract(aClass.getModifiers())) {
+                proxyConfigurators.add(aClass.getDeclaredConstructor().newInstance());
             }
         }
     }
@@ -43,24 +50,21 @@ public class ObjectFactory {
 
         invokeInit(type, t);
 
-        if (type.isAnnotationPresent(Loggable.class)) {
-            Object proxy = Proxy.newProxyInstance(type.getClassLoader(), type.getInterfaces(), new InvocationHandler() {
-                @Override
-                public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-                    System.out.println("Logging for method " + method.getName() + " started");
-                    Object retVal = method.invoke(t, args);
-
-                    System.out.println("Logging for method " + method.getName() + " ended");
-                    return retVal;
-                }
-            });
-            return (T) proxy;
-        }
+        t = wrapWithProxy(t,type);
 
         return t;
 
 
     }
+
+    private <T> T wrapWithProxy(T t, Class<T> type) {
+        for (ProxyConfigurator proxyConfigurator : proxyConfigurators) {
+            t = (T) proxyConfigurator.wrapWithProxy(t,type);
+        }
+        return t;
+    }
+
+
 
     private <T> void invokeInit(Class<T> type, T t) throws IllegalAccessException, InvocationTargetException {
         Method[] methods = type.getMethods();
