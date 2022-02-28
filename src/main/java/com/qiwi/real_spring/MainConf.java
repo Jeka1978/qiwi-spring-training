@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
  */
 @Configuration
 @ComponentScan
+@EnableAspectJAutoProxy
 @PropertySource("classpath:application.properties")
 //@ImportResource("classpath:context.xml")
 public class MainConf {
