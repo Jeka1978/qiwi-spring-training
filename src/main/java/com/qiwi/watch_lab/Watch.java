@@ -1,20 +1,38 @@
 package com.qiwi.watch_lab;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import java.util.List;
+
 /**
  * @author Evgeny Borisov
  */
+@Component
 public class Watch {
 
+    @Autowired
+    private List<Regime> regimes;
+
+    private int index;
+
+    @Autowired
+    private Regime currentRegime;
+
     public void a() {
-//todo this method should invoke some logic according to choosen regime
+        currentRegime.a();
     }
 
     public void b() {
-        //todo this method should invoke some logic according to choosen regime
+        currentRegime.b();
     }
 
     public void nextRegime() {
-        //todo next regime switch in a circle
+        index++;
+        if (index == regimes.size()) {
+            index=0;
+        }
+        currentRegime = regimes.get(index);
     }
 
 
