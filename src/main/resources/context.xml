@@ -1,33 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
 
 
-    <bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>
+    <context:component-scan base-package="com.qiwi"/>
+
+    <context:property-placeholder location="application.properties"/>
 
 
-    <bean id="talkingRobot" class="com.qiwi.real_spring.TalkingRobot">
-        <property name="quoters">
-            <list>
-                <ref bean="shakespearQuoter"/>
-                <ref bean="terminatorQuoter"/>
-            </list>
-        </property>
+    <bean class="com.qiwi.real_spring.TalkingRobot">
+
     </bean>
 
-    <bean id="shakespearQuoter" class="com.qiwi.real_spring.ShakespearQuoter" lazy-init="true">
-        <property name="message" value="2 B || ! 2 B"/>
+    <bean id="shakespear" class="com.qiwi.real_spring.ShakespearQuoter" lazy-init="true">
+
     </bean>
 
 
     <bean id="terminatorQuoter" class="com.qiwi.real_spring.TerminatorQuoter">
-        <property name="messages">
-            <list>
-                <value>I'll be back</value>
-                <value>Trust me</value>
-            </list>
-        </property>
+
     </bean>
 </beans>
 

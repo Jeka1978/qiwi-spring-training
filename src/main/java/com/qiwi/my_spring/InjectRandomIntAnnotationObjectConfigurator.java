@@ -2,6 +2,7 @@ package com.qiwi.my_spring;
 
 import lombok.SneakyThrows;
 import org.reflections.ReflectionUtils;
+import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Field;
 import java.util.Random;
